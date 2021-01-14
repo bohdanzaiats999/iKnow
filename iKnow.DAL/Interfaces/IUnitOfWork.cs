@@ -2,7 +2,7 @@
 
 namespace iKnow.DAL.Interfaces
 {
-    interface IUnitOfWork
+    public interface IUnitOfWork
     {
         UserRepository<T> Repository<T>() where T : class;
         void SaveChanges();

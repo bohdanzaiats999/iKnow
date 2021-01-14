@@ -1,54 +1,79 @@
-﻿using iKnow.DAL.Interfaces;
+﻿using iKnow.DAL.EF;
+using iKnow.DAL.Entityes;
+using iKnow.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace iKnow.DAL.Repositories
 {
-    class UserRepository<T> : IRepository<T> where T : class
+    public class UserRepository<T> : IRepository<T> where T : class
     {
-        public IQueryable<T> Set => throw new NotImplementedException();
+        private readonly iKnowContext context;
+        private readonly DbSet<T> entities;
 
+        public UserRepository(iKnowContext context)
+        {
+            this.context = context;
+            this.entities = context.Set<T>();
+        }
+        public IQueryable<T> Set => this.entities;
+        public T GetById(object id) => this.entities.Find(id);
+        public UserEntity GetByLogin(string login) => this.context.Users.FirstOrDefault(u => u.Login == login);
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Entity is empty");
+            }
+            this.entities.Remove(entity);
         }
-
         public void DeleteById(object id)
         {
-            throw new NotImplementedException();
-        }
+            T entityToDelete = this.entities.Find(id);
 
-        public T GetById(object id)
-        {
-            throw new NotImplementedException();
+            if (entityToDelete == null)
+            {
+                throw new ArgumentNullException("Entity is empty");
+            }
+            this.entities.Remove(entityToDelete);
         }
-
         public IQueryable<T> GetWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] include)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = this.entities;
+            query = include.Aggregate(query, (current, inc) => current.Include(inc));
+            return query.Where(predicate);
         }
-
         public IQueryable<T> Include(params Expression<Func<T, object>>[] include)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = this.entities;
+            return include.Aggregate(query, (current, inc) => current.Include(inc));
         }
-
+        public IEnumerable<T> GetAll() => this.entities.ToList();
         public void Insert(T entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Entity is empty");
+            }
+            this.entities.Add(entity);
         }
-
         public void RemoveRange(IQueryable<T> entities)
         {
-            throw new NotImplementedException();
+            foreach (var entity in entities.ToList())
+            {
+                this.context.Entry(entity).State = EntityState.Deleted;
+            }
         }
-
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Entity is empty");
+            }
+            this.context.SaveChanges();
         }
     }
 }
