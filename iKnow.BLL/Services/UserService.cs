@@ -39,12 +39,12 @@ namespace iKnow.BLL.Services
                     Email = new EmailEntity { EmailAdress = userModel.Email },
                     RoleId = userModel.RoleId
                 });
-                Database.SaveChanges();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+                Database.SaveChanges();
         }
 
         public void Login(UserModel userModel)
@@ -60,13 +60,13 @@ namespace iKnow.BLL.Services
         // Get all users
         public IList<UserModel> GetAllUsers()
         {
-            IList<UserEntity> userEntities = Database.Repository<UserEntity>().GetAll().ToList();
+            IList<UserEntity> userEntities = Database.Repository<UserEntity>().Include(e=>e.Email).ToList();
 
             MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<UserEntity, UserModel>()
             .ForMember("Email", f => f.MapFrom(x => x.Email.EmailAdress)));
-            var userModelList = new Mapper(config).Map<IList<UserModel>>(userEntities);
+            return new Mapper(config).Map<IList<UserModel>>(userEntities);
 
-            return userModelList;
+
         }
     }
 }

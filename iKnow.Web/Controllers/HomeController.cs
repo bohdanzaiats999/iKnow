@@ -13,6 +13,8 @@ namespace iKnow.Web.Controllers
         public HomeController(IUserService userService)
         {
             this.userService = userService;
+        
+        
         }
 
         public IActionResult Index()
@@ -24,6 +26,18 @@ namespace iKnow.Web.Controllers
 
             return View(userViewModel);
         }
-
+       
+        [HttpGet]
+        public IActionResult Get(int? roleId)
+        {
+            if (roleId == null) return RedirectToAction("Index");
+            ViewBag.RoleId = roleId;
+            return View();
+        }
+        [HttpPost]
+        public string Buy(UserViewModel user)
+        {
+            return "Thank you, " + user.Login + ", for change!";
+        }
     }
 }
