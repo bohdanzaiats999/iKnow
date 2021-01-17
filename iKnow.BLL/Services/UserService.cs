@@ -49,7 +49,21 @@ namespace iKnow.BLL.Services
 
         public void Login(UserModel userModel)
         {
-            throw new System.NotImplementedException();
+            UserEntity user = Database.Repository<UserEntity>().GetByLogin(userModel.Login);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            string encryptedPassword = new AesCrypt().GetEncryptedPassword(userModel.Password);
+
+            // Compare password in database and user password
+            if (user.Password != encryptedPassword)
+            {
+                throw new Exception("Password is wrong");
+            }
+            RoleId = user.RoleId;
         }
 
         public int GetRoleId()

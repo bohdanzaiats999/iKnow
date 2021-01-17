@@ -13,8 +13,6 @@ namespace iKnow.Web.Controllers
         public HomeController(IUserService userService)
         {
             this.userService = userService;
-        
-        
         }
 
         public IActionResult Index()
