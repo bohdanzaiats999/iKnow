@@ -10,6 +10,7 @@ namespace iKnow.DAL.EF
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<PhoneEntity> Phones { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
+        public DbSet<EmailEntity> Emails { get; set; }
 
         public iKnowContext() => Database.EnsureCreated();
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

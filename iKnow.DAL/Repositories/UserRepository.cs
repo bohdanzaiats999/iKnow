@@ -75,5 +75,9 @@ namespace iKnow.DAL.Repositories
             }
             this.context.SaveChanges();
         }
+        public IList<EmailEntity> GetAllEmails()
+        {
+            return this.context.Emails.ToList();
+        }
     }
 }
