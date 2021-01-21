@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
+using iKnow.BLL.Security;
 
 namespace iKnow.BLL.Services
 {
@@ -104,6 +105,57 @@ namespace iKnow.BLL.Services
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        // Save Email data in database when using timer
+        public void SaveTimerData(int userId, EmailModel model)
+        {
+            var email = Database.Repository<EmailEntity>().GetById(userId);
+
+            MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<EmailModel, EmailEntity>());
+            var emailEntity = new Mapper(config).Map<EmailModel, EmailEntity>(model, email);
+
+            Database.Repository<EmailEntity>().Update(email);
+            Database.SaveChanges();
+        }
+
+        public void ChangePasswordByEmail(UserModel userModel)
+        {
+            string newPassword = string.Empty;
+            string encryptedNewPassword = string.Empty;
+
+            UserEntity user = Database.Repository<UserEntity>().GetByLogin(userModel.Login);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            // Generate uniqe password
+            do
+            {
+                newPassword = new GenerateNewPassword().Generate();
+                encryptedNewPassword = new AesCrypt().GetEncryptedPassword(newPassword);
+            }
+            while (newPassword == user.Password);
+
+
+            user.Password = encryptedNewPassword;
+            Database.Repository<UserEntity>().Update(user);
+            Database.SaveChanges();
+
+            // Email data
+            string fromAdressTitle = "Email from Bohdan Zaiats";
+            string toAddress = user.Email.EmailAdress;
+            string subject = "Generating new pasword";
+            string bodyContent = $"Your New password: {newPassword}";
+
+            SendEmail(new EmailModel
+            {
+                FromAdressTitle = fromAdressTitle,
+                ToAddress = toAddress,
+                Subject = subject,
+                BodyContent = bodyContent
+            });
         }
     }
 }

@@ -7,11 +7,11 @@ namespace iKnow.DAL.Repositories
 {
     public class UnitOfWork : IDisposable, IUnitOfWork
     {
-        private readonly iKnowContext context;
+        private readonly IKnowContext context;
         private bool disposed;
         private Dictionary<string, object> repositories;
-        public UnitOfWork() => context = new iKnowContext();
-        public UnitOfWork(iKnowContext context) => this.context = context;
+        public UnitOfWork() => context = new IKnowContext();
+        public UnitOfWork(IKnowContext context) => this.context = context;
         public void SaveChanges() => context.SaveChanges();
         public UserRepository<T> Repository<T>() where T : class
         {

@@ -11,10 +11,10 @@ namespace iKnow.DAL.Repositories
 {
     public class UserRepository<T> : IRepository<T> where T : class
     {
-        private readonly iKnowContext context;
+        private readonly IKnowContext context;
         private readonly DbSet<T> entities;
 
-        public UserRepository(iKnowContext context)
+        public UserRepository(IKnowContext context)
         {
             this.context = context;
             this.entities = context.Set<T>();
