@@ -79,8 +79,6 @@ namespace iKnow.BLL.Services
             MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<UserEntity, UserModel>()
             .ForMember("Email", f => f.MapFrom(x => x.Email.EmailAdress)));
             return new Mapper(config).Map<IList<UserModel>>(userEntities);
-
-
         }
     }
 }

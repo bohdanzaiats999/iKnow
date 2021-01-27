@@ -15,6 +15,7 @@ namespace iKnow.Web.Controllers
             this.userService = userService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var users = userService.GetAllUsers();
@@ -24,12 +25,11 @@ namespace iKnow.Web.Controllers
 
             return View(userViewModel);
         }
-       
         [HttpGet]
-        public IActionResult Get(int? roleId)
+        public IActionResult Details(UserViewModel user)
         {
-            if (roleId == null) return RedirectToAction("Index");
-            ViewBag.RoleId = roleId;
+            if (user == null) return RedirectToAction("Index");
+            ViewBag.Login = user;
             return View();
         }
         [HttpPost]
