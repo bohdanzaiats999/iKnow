@@ -22,13 +22,14 @@
     <tr>
         @*<td><a asp-controller="Home" asp-action="Details" name="@user.Login"> Detail information</a></td>*@
 
-        @Html.ActionLink(
-       linkText:"Detail information",
-       actionName:"Details",
-       controllerName:"Home",
-       routeValues:user,
-       htmlAttributes:null
-       )
+        <td>
+            @Html.ActionLink(
+           linkText: "Detail information",
+           actionName: "Details",
+           controllerName: "Home",
+           routeValues: user,
+           htmlAttributes: null)
+        </td>
     </tr>
     }
         }
