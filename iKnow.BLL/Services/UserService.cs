@@ -47,6 +47,7 @@ namespace iKnow.BLL.Services
                 Database.SaveChanges();
         }
 
+        // Login a user
         public void Login(UserModel userModel)
         {
             UserEntity user = Database.Repository<UserEntity>().GetByLogin(userModel.Login);
@@ -68,7 +69,7 @@ namespace iKnow.BLL.Services
 
         public int GetRoleId()
         {
-            throw new System.NotImplementedException();
+            return RoleId;
         }
 
         // Get all users

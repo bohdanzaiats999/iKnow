@@ -1,0 +1,27 @@
+﻿@model iKnow.Web.Models.RegistrationViewModel
+@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration</title>
+</head>
+<body>
+    <h3>Registration</h3>
+    @using (Html.BeginForm())
+    {
+        <div>
+            <p><input type="text" asp-for="Login" placeholder="Login" /></p>
+        </div>
+        <div>
+            <p><input type="password" asp-for="Password" placeholder="Password" /></p>
+        </div>
+        <div>
+            <p><input type="email" asp-for="Email" placeholder="Email" /></p>
+        </div>
+        <p><input type="submit" value="Register" /></p>
+    }
+</body>
+
+</html>

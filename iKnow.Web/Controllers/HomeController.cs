@@ -25,17 +25,43 @@ namespace iKnow.Web.Controllers
 
             return View(userViewModel);
         }
+
         [HttpGet]
-        public IActionResult Details(UserViewModel user)
+        public IActionResult Login()
         {
-            if (user == null) return RedirectToAction("Index");
-            ViewBag.Login = user;
             return View();
         }
+
         [HttpPost]
-        public string Buy(UserViewModel user)
+        public IActionResult Login(LoginViewModel viewModel)
         {
-            return "Thank you, " + user.Login + ", for change!";
+
+            MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<LoginViewModel, UserModel>());
+            var loginModel = new Mapper(config).Map<UserModel>(viewModel);
+
+            userService.Login(loginModel);
+
+            return userService.GetRoleId() == 1 ? RedirectToAction("Index", "AdminPanel") : RedirectToAction("Index", "UserPanel");
+        }
+
+        [HttpGet]
+        public IActionResult Registration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Registration(RegistrationViewModel viewModel)
+        {
+            MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<RegistrationViewModel, UserModel>());
+            var registrationModel = new Mapper(config).Map<UserModel>(viewModel);
+
+            //Assign to new user status "User"
+            registrationModel.RoleId = (int)UserRoles.User;
+
+            userService.Registration(registrationModel);
+
+            return Content("Successful");
         }
     }
 }

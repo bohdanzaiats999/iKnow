@@ -2,37 +2,21 @@
 @{
     Layout = null;
 }
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>User list</title>
+    <title>iKnow</title>
 </head>
 <body>
-        <h3>Users</h3>
-    <table>
-        <tr>
-            <td>User</td>
-            <td>Email</td>
-            <td></td>
-        </tr>
+    <h3>iKnow</h3>
     @using (Html.BeginForm())
     {
-        foreach (UserViewModel user in Model)
-        {
-    <tr>
-        @*<td><a asp-controller="Home" asp-action="Details" name="@user.Login"> Detail information</a></td>*@
-
-        <td>
-            @Html.ActionLink(
-           linkText: "Detail information",
-           actionName: "Details",
-           controllerName: "Home",
-           routeValues: user,
-           htmlAttributes: null)
-        </td>
-    </tr>
+        <div>
+        <a asp-controller="Home" asp-action="Login">Login</a>
+        </div>
+        <div>
+        <a asp-controller="Home" asp-action="Registration">Registration</a>
+        </div>
     }
-        }
-    </table>
 </body>
 </html>
