@@ -1,13 +1,13 @@
-﻿using AutoMapper;
-using iKnow.BLL.Interfaces;
+﻿using System;
+using AutoMapper;
+using System.Linq;
 using iKnow.BLL.Models;
 using iKnow.BLL.Security;
 using iKnow.DAL.Entityes;
 using iKnow.DAL.Interfaces;
+using iKnow.BLL.Interfaces;
 using iKnow.DAL.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace iKnow.BLL.Services
 {
