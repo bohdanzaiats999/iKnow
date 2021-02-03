@@ -30,6 +30,24 @@ namespace iKnow.DAL.Repositories
             }
             return (UserRepository<T>)repositories[type];
         }
+        public ExcerciseRepository<T> Repository<T>() where T : class
+        {
+            if (repositories == null)
+            {
+                repositories = new Dictionary<string, object>();
+            }
+
+            var type = typeof(T).Name;
+
+            if (!repositories.ContainsKey(type))
+            {
+                var repositoryType = typeof(UserRepository<>);
+                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), context);
+                repositories.Add(type, repositoryInstance);
+            }
+            return (UserRepository<T>)repositories[type];
+        }
+
         public void Dispose()
         {
             Dispose(true);

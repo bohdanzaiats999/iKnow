@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace iKnow.Web.Controllers
 {
-    public class UserPanel : Controller
+    public class UserPanelController : Controller
     {
         public IActionResult Index()
         {
