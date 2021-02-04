@@ -2,8 +2,6 @@
 using iKnow.DAL.Entityes;
 using iKnow.DAL.Interfaces;
 using iKnow.DAL.Repositories;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace iKnow.BLL.Services
 {
@@ -14,6 +12,7 @@ namespace iKnow.BLL.Services
 
         public void AddNumberArray(int[] arr)
         {
+
         }
 
         public int Excercise1_FindIt(int[] seq)

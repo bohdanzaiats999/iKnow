@@ -24,7 +24,7 @@ namespace iKnow.BLL.Services
         // Register a new user
         public void Registration(UserModel userModel)
         {
-            UserEntity user = Database.Repository<UserEntity>().GetByLogin(userModel.Login);
+            UserEntity user = Database.UserRepository<UserEntity>().GetByLogin(userModel.Login);
 
             if (user != null)
             {
@@ -32,7 +32,7 @@ namespace iKnow.BLL.Services
             }
             try
             {
-                Database.Repository<UserEntity>().Insert(new UserEntity
+                Database.UserRepository<UserEntity>().Insert(new UserEntity
                 {
                     Login = userModel.Login,
                     Password = new AesCrypt().GetEncryptedPassword(userModel.Password),
@@ -50,7 +50,7 @@ namespace iKnow.BLL.Services
         // Login a user
         public void Login(UserModel userModel)
         {
-            UserEntity user = Database.Repository<UserEntity>().GetByLogin(userModel.Login);
+            UserEntity user = Database.UserRepository<UserEntity>().GetByLogin(userModel.Login);
 
             if (user == null)
             {
@@ -75,7 +75,7 @@ namespace iKnow.BLL.Services
         // Get all users
         public IList<UserModel> GetAllUsers()
         {
-            IList<UserEntity> userEntities = Database.Repository<UserEntity>().Include(e=>e.Email).ToList();
+            IList<UserEntity> userEntities = Database.UserRepository<UserEntity>().Include(e=>e.Email).ToList();
 
             MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<UserEntity, UserModel>()
             .ForMember("Email", f => f.MapFrom(x => x.Email.EmailAdress)));

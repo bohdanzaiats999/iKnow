@@ -34,7 +34,7 @@ namespace iKnow.BLL.Services
 
         public IList<EmailModel> GetEmailList()
         {
-            IList<EmailEntity> emailEntities = Database.Repository<EmailEntity>().Include(e => e.Users).ToList();
+            IList<EmailEntity> emailEntities = Database.UserRepository<EmailEntity>().Include(e => e.Users).ToList();
 
             MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<EmailEntity, EmailModel>());
             return new Mapper(config).Map<IList<EmailModel>>(emailEntities);
@@ -63,12 +63,12 @@ namespace iKnow.BLL.Services
                         emailModel.SendingTime = DateTime.MinValue;
                         SendEmail(emailModel);
 
-                        IList<EmailEntity> emailEntities = Database.Repository<EmailEntity>().Include(e => e.Users).ToList();
+                        IList<EmailEntity> emailEntities = Database.UserRepository<EmailEntity>().Include(e => e.Users).ToList();
 
                         MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<EmailModel, EmailEntity>());
                         var emailEntity = new Mapper(config).Map<EmailModel, EmailEntity>(emailModel);
 
-                        Database.Repository<EmailEntity>().Update(emailEntity);
+                        Database.UserRepository<EmailEntity>().Update(emailEntity);
                         Database.SaveChanges();
                     });
                 }
@@ -110,12 +110,12 @@ namespace iKnow.BLL.Services
         // Save Email data in database when using timer
         public void SaveTimerData(int userId, EmailModel model)
         {
-            var email = Database.Repository<EmailEntity>().GetById(userId);
+            var email = Database.UserRepository<EmailEntity>().GetById(userId);
 
             MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<EmailModel, EmailEntity>());
             var emailEntity = new Mapper(config).Map<EmailModel, EmailEntity>(model, email);
 
-            Database.Repository<EmailEntity>().Update(email);
+            Database.UserRepository<EmailEntity>().Update(email);
             Database.SaveChanges();
         }
 
@@ -124,7 +124,7 @@ namespace iKnow.BLL.Services
             string newPassword = string.Empty;
             string encryptedNewPassword = string.Empty;
 
-            UserEntity user = Database.Repository<UserEntity>().GetByLogin(userModel.Login);
+            UserEntity user = Database.UserRepository<UserEntity>().GetByLogin(userModel.Login);
 
             if (user == null)
             {
@@ -140,7 +140,7 @@ namespace iKnow.BLL.Services
 
 
             user.Password = encryptedNewPassword;
-            Database.Repository<UserEntity>().Update(user);
+            Database.UserRepository<UserEntity>().Update(user);
             Database.SaveChanges();
 
             // Email data

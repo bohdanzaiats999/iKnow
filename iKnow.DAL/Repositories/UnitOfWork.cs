@@ -7,47 +7,8 @@ namespace iKnow.DAL.Repositories
 {
     public class UnitOfWork : IDisposable, IUnitOfWork
     {
-        private readonly IKnowContext context;
         private bool disposed;
-        private Dictionary<string, object> repositories;
-        public UnitOfWork() => context = new IKnowContext();
-        public UnitOfWork(IKnowContext context) => this.context = context;
-        public void SaveChanges() => context.SaveChanges();
-        public UserRepository<T> Repository<T>() where T : class
-        {
-            if (repositories == null)
-            {
-                repositories = new Dictionary<string, object>();
-            }
-
-            var type = typeof(T).Name;
-
-            if (!repositories.ContainsKey(type))
-            {
-                var repositoryType = typeof(UserRepository<>);
-                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), context);
-                repositories.Add(type, repositoryInstance);
-            }
-            return (UserRepository<T>)repositories[type];
-        }
-        public ExcerciseRepository<T> Repository<T>() where T : class
-        {
-            if (repositories == null)
-            {
-                repositories = new Dictionary<string, object>();
-            }
-
-            var type = typeof(T).Name;
-
-            if (!repositories.ContainsKey(type))
-            {
-                var repositoryType = typeof(UserRepository<>);
-                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), context);
-                repositories.Add(type, repositoryInstance);
-            }
-            return (UserRepository<T>)repositories[type];
-        }
-
+        private readonly IKnowContext context;
         public void Dispose()
         {
             Dispose(true);
@@ -63,6 +24,45 @@ namespace iKnow.DAL.Repositories
                 }
             }
             disposed = true;
+        }
+        private Dictionary<string, object> repositories;
+        public void SaveChanges() => context.SaveChanges();
+        public UnitOfWork() => context = new IKnowContext();
+        public UserRepository<T> UserRepository<T>() where T : class
+        {
+            if (repositories == null)
+            {
+                repositories = new Dictionary<string, object>();
+            }
+
+            var type = typeof(T).Name;
+
+            if (!repositories.ContainsKey(type))
+            {
+                var repositoryType = typeof(UserRepository<>);
+                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), context);
+                repositories.Add(type, repositoryInstance);
+            }
+            return (UserRepository<T>)repositories[type];
+        }
+
+        public UnitOfWork(IKnowContext context) => this.context = context;
+        public ExcerciseRepository<T> ExcerciseRepository<T>() where T : class
+        {
+            if (repositories == null)
+            {
+                repositories = new Dictionary<string, object>();
+            }
+
+            var type = typeof(T).Name;
+
+            if (!repositories.ContainsKey(type))
+            {
+                var repositoryType = typeof(ExcerciseRepository<>);
+                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), context);
+                repositories.Add(type, repositoryInstance);
+            }
+            return (ExcerciseRepository<T>)repositories[type];
         }
     }
 }
