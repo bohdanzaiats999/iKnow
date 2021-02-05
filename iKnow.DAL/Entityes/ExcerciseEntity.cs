@@ -6,24 +6,24 @@ namespace iKnow.DAL.Entityes
     public class ExcerciseEntity
     {
         public int Id { get; set; }
-        public int Name { get; set; }
-        public int NumericResult { get; set; }
-        public string TextResult { get; set; }
+        public string Name { get; set; }
+        public int Number { get; set; }
+        public string Text { get; set; }
 
         [NotMapped]
-        public string[] _arrayTextResult
+        public string[] _textArray
         {
-            get => ArrayTextResult.Split(';');
-            set => ArrayTextResult = string.Join(";", value);
+            get => TextArray.Split(';');
+            set => TextArray = string.Join(";", value);
         }
-        public string ArrayTextResult { get; set; }
+        private string TextArray { get; set; }
 
         [NotMapped]
-        public int[] _arrayNumericResult
+        public int[] _numberArray
         {
-            get => Array.ConvertAll(ArrayNumericResult.Split(';'), Int32.Parse);
-            set => ArrayNumericResult = string.Join(";", value);
+            get => Array.ConvertAll(NumberArray.Split(';'), Int32.Parse);
+            set => NumberArray = string.Join(";", value);
         }
-        public string ArrayNumericResult { get; set; }
+        private string NumberArray { get; set; }
     }
 }

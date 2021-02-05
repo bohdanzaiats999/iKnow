@@ -1,7 +1,9 @@
 ﻿using iKnow.BLL.Interfaces;
+using iKnow.BLL.Models;
 using iKnow.DAL.Entityes;
 using iKnow.DAL.Interfaces;
 using iKnow.DAL.Repositories;
+using System;
 
 namespace iKnow.BLL.Services
 {
@@ -10,32 +12,47 @@ namespace iKnow.BLL.Services
         IUnitOfWork Database;
         public ExcerciseService() => Database = new UnitOfWork();
 
-        public void AddNumberArray(int[] arr)
+        public void AddArray(ExcerciseModel excerciseModel)
         {
+            ExcerciseEntity excerciseEntity = Database?.ExcerciseRepository<ExcerciseEntity>()?.GetByName(excerciseModel.Name);
+
+            if (excerciseEntity != null)
+            {
+                throw new Exception("This Name already exist");
+            }
+            try
+            {
+                Database.UserRepository<ExcerciseEntity>().Insert(new ExcerciseEntity
+                {
+                    Name = excerciseModel.Name,
+                    Number = excerciseModel.Number,
+                    Text = excerciseModel.Text,
+                    _numberArray = excerciseModel.NumberArray,
+                    _textArray = excerciseModel.TextArray
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            Database.SaveChanges();
+
 
         }
-
         public int Excercise1_FindIt(int[] seq)
         {
-            //Given an array of integers, find the one that appears an odd number of times.
-            //There will always be only one integer that appears an odd number of times.
+            // Given an array of integers, find the one that appears an odd number of times.
+            // There will always be only one integer that appears an odd number of times.
 
-            //For examle
-            //new[] { 20, 1, -1, 2, -2, 3, 3, 5, 5, 1, 2, 4, 20, 4, -1, -2, 5 };
+            // For examle
+            // new[] { 20, 1, -1, 2, -2, 3, 3, 5, 5, 1, 2, 4, 20, 4, -1, -2, 5 };
+            int found = 0;
 
-            for (int i = 0; i < seq.Length; i++)
+            foreach (var item in seq)
             {
-                for (int j = 0; j < seq.Length - 1; j++)
-                {
-                    if (seq[j] > seq[j + 1])
-                    {
-                        int temp = seq[j + 1];
-                        seq[j + 1] = seq[j];
-                        seq[j] = temp;
-                    }
-                }
+                found ^= item;
             }
-            return -1;
+            return found;
         }
     }
 }

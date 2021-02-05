@@ -1,13 +1,13 @@
-﻿using System;
-using AutoMapper;
-using System.Linq;
+﻿using AutoMapper;
+using iKnow.BLL.Interfaces;
 using iKnow.BLL.Models;
 using iKnow.BLL.Security;
 using iKnow.DAL.Entityes;
 using iKnow.DAL.Interfaces;
-using iKnow.BLL.Interfaces;
 using iKnow.DAL.Repositories;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace iKnow.BLL.Services
 {
@@ -44,7 +44,7 @@ namespace iKnow.BLL.Services
             {
                 throw new Exception(ex.Message);
             }
-                Database.SaveChanges();
+            Database.SaveChanges();
         }
 
         // Login a user
@@ -75,7 +75,7 @@ namespace iKnow.BLL.Services
         // Get all users
         public IList<UserModel> GetAllUsers()
         {
-            IList<UserEntity> userEntities = Database.UserRepository<UserEntity>().Include(e=>e.Email).ToList();
+            IList<UserEntity> userEntities = Database.UserRepository<UserEntity>().Include(e => e.Email).ToList();
 
             MapperConfiguration config = new MapperConfiguration(cfg => cfg.CreateMap<UserEntity, UserModel>()
             .ForMember("Email", f => f.MapFrom(x => x.Email.EmailAdress)));

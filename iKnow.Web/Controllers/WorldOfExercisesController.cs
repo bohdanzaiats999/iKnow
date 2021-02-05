@@ -17,5 +17,9 @@ namespace iKnow.Web.Controllers
 
             return View(new ExcerciseViewModel { NumericResult = excerciseService.Excercise1_FindIt(arr) });
         }
+        public IActionResult AddArray(ExcerciseViewModel viewModel)
+        {
+            return View();
+        }
     }
 }
