@@ -11,15 +11,20 @@ namespace iKnow.Web.Controllers
         {
             this.excerciseService = excerciseService;
         }
+        [HttpGet]
         public IActionResult Index()
         {
             int[] arr = new[] { 20, 1, -1, 2, -2, 3, 3, 5, 5, 1, 2, 4, 20, 4, -1, -2, 5 };
-
-            return View(new ExcerciseViewModel { NumericResult = excerciseService.Excercise1_FindIt(arr) });
+            var excerciseViewModel = new ExcerciseViewModel
+            {
+                Number = excerciseService.Excercise1_FindOdd(arr),
+                Text = excerciseService.Excercise2_RepeatString(5,"*")
+            };
+            return View(excerciseViewModel);
         }
         public IActionResult AddArray(ExcerciseViewModel viewModel)
         {
-            return View();
+            return View("Index");
         }
     }
 }

@@ -4,6 +4,7 @@ using iKnow.DAL.Entityes;
 using iKnow.DAL.Interfaces;
 using iKnow.DAL.Repositories;
 using System;
+using System.Linq;
 
 namespace iKnow.BLL.Services
 {
@@ -39,7 +40,7 @@ namespace iKnow.BLL.Services
 
 
         }
-        public int Excercise1_FindIt(int[] seq)
+        public int Excercise1_FindOdd(int[] seq)
         {
             // Given an array of integers, find the one that appears an odd number of times.
             // There will always be only one integer that appears an odd number of times.
@@ -53,6 +54,10 @@ namespace iKnow.BLL.Services
                 found ^= item;
             }
             return found;
+        }
+        public string Excercise2_RepeatString(int times, string value)
+        {
+            return String.Concat(Enumerable.Repeat(value, times));
         }
     }
 }

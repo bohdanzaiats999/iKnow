@@ -11,9 +11,11 @@
     <h3>World of Excercises</h3>
     @using (Html.BeginForm())
     {
-        <div>
-            <h2>Result: @Model.NumericResult</h2>
-        </div>
+<div>
+    <h2>Number: @Model.Number</h2>
+    <h2>Text: @Model.Text</h2>
+    <p><input type="submit" asp-for="Number" asp-action="AddArray" value="Add array to DB" /></p>
+</div>
     }
 </body>
 </html>
